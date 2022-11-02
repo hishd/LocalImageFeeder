@@ -87,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Please select a bitmap image", Toast.LENGTH_SHORT).show();
                 return;
             }
-            storeBitmapImage(txtImageId.getText().toString(), bitmap);
+
+            //Saving the image with medium quality
+            storeBitmapImage(txtImageId.getText().toString(), bitmap, 50);
         });
         btnRetrieve.setOnClickListener(view -> {
             if (txtImageId.getText().toString().isEmpty()) {
@@ -164,15 +166,16 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param imageId the image name to be saved
      * @param bitmap  the generated Bitmap
+     * @param quality the quality of the image 100 = high, 50 = medium
      */
-    private void storeBitmapImage(String imageId, Bitmap bitmap) {
+    private void storeBitmapImage(String imageId, Bitmap bitmap, int quality) {
         try {
             //Create a empty file on the app specific directory
             //Existing files will be overwritten
             File dest = new File(getFilesDir(), imageId);
             try {
                 FileOutputStream out = new FileOutputStream(dest);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
                 out.flush();
                 out.close();
 
